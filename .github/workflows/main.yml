@@ -15,6 +15,22 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Create missing ActiveHelper.java
+        run: |
+          mkdir -p easycontrol/app/src/main/java/top/saymzx/easycontrol/app/helper
+          cat << 'EOF' > easycontrol/app/src/main/java/top/saymzx/easycontrol/app/helper/ActiveHelper.java
+          package top.saymzx.easycontrol.app.helper;
+
+          public class ActiveHelper {
+              public static boolean active(String activeKey) {
+                  return true;
+              }
+              public static boolean deactivate(String activeKey) {
+                  return true;
+              }
+          }
+          EOF
+
       - name: Make gradlew executable
         run: chmod +x easycontrol/gradlew
 
