@@ -1,33 +1,31 @@
-name: Build Easycontrol APK
-
+name: Build EasyControl APK
 on:
   workflow_dispatch:
-  push:
-    branches: [ "master", "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          distribution: temurin
           java-version: '17'
+          distribution: 'temurin'
 
-      - name: Grant gradlew execute permission
-        run: chmod +x ./gradlew
+      - name: Make gradlew executable
+        run: chmod +x easycontrol/gradlew
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Build Server
+        run: cd easycontrol && ./gradlew :server:copyRelease
+
+      - name: Build App APK
+        run: cd easycontrol && ./gradlew :app:assembleRelease
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
-          name: easycontrol-apk
-          path: |
-            **/build/outputs/apk/**/*.apk
+          name: easycontrol-app-release
+          path: easycontrol/app/build/outputs/apk/release/*.apk
