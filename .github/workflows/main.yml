@@ -37,11 +37,13 @@ jobs:
       - name: Build Server
         run: cd easycontrol && ./gradlew :server:copyRelease
 
+      # 这里改成了 assembleDebug，生成自带签名的 APK
       - name: Build App APK
-        run: cd easycontrol && ./gradlew :app:assembleRelease
+        run: cd easycontrol && ./gradlew :app:assembleDebug
 
+      # 这里的路径也改成了 debug 文件夹
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: easycontrol-app-release
-          path: easycontrol/app/build/outputs/apk/release/*.apk
+          name: easycontrol-app-debug
+          path: easycontrol/app/build/outputs/apk/debug/*.apk
